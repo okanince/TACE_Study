@@ -3,7 +3,7 @@
 """
 Created on Thu Apr  7 18:01:37 2022
 
-@author: okanreyiz
+@author: okanincemd
 """
 
 
@@ -16,8 +16,8 @@ from sklearn.model_selection import cross_val_score, cross_validate
 import warnings
 warnings.filterwarnings('ignore')
 
-clin = pd.read_excel("smote_clin_feats.xlsx")
-df = pd.read_excel("Arter korelasyon yapıldı.xlsx")
+clin = pd.read_excel("......xlsx")
+df = pd.read_excel("........xlsx")
 
 x = df.iloc[:,:-1]
 y = df.iloc[:,-1]
@@ -33,26 +33,7 @@ sc = StandardScaler()
 
 X = sc.fit_transform(x)
 
-#%%
 
-X = pd.DataFrame(X, columns = x.columns)
-#%% Forward Prop with accuracy
-
-from sklearn.linear_model import LogisticRegression
-from sklearn.svm import SVC
-
-svm = SVC(C =1, kernel = "rbf", random_state = 42)
-
-log_sfs = LogisticRegression(penalty = "l2", solver = "liblinear")
-
-sfs1 = SFS(svm, k_features = "best", forward = True, floating = True,
-           cv = 5, scoring = "accuracy", n_jobs = -1, verbose = 2)
-
-sfs1.fit(X,y)
-
-#%%
-X1 = sfs1.transform(X)
-X1 = pd.DataFrame(X1, columns = sfs1.k_feature_names_)
 #%% Combination with Clinical Features
 
 clin_df = pd.concat([X1,clin], axis = 1)
@@ -62,7 +43,7 @@ clin_df.drop("Response", axis = 1, inplace = True)
 
 from sklearn.model_selection import train_test_split
 
-X_train,X_test,y_train,y_test = train_test_split(X1,y,
+X_train,X_test,y_train,y_test = train_test_split(X,y,
                                                  test_size= 0.33, 
                                                  random_state= 42)
 
@@ -150,9 +131,7 @@ plt.legend(loc = "lower right")
 plt.savefig("CE-T1 ROC.png", format = "png", dpi = 300)
 plt.show()
 
-#%%
 
-#X1.to_excel("Arter selected features.xlsx", index = False)
 
 #%% Calibration plot
 
